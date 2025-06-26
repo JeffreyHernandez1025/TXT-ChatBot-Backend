@@ -4,6 +4,9 @@ import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import cors from 'cors'
 
+// import routes
+import answerQuery from './RAG_Pipeline/answerQuery.js'
+
 // scrape and save retreival data
 import getRetrievalData from './RAG_Pipeline/crawling.js'
 import chunker from './RAG_Pipeline/chunking.js'
@@ -29,6 +32,10 @@ const PORT = process.env.PORT
 // initialize server
 const server = express()
 
+// middleware
+server.use(express.json())
+server.use(cors())
+
 // connect to DB
 async function connectToDB() {
     try {
@@ -41,6 +48,9 @@ async function connectToDB() {
 connectToDB()
 
 // createRetrievalDocuments()
+
+// run routes
+server.use(answerQuery)
 
 // run server
 server.listen(PORT, () => {
