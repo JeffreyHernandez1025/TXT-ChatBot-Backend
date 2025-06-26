@@ -1,5 +1,5 @@
 // import dependencies
-const { RecursiveCharacterTextSplitter } = require('langchain/text_splitter')
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter"
 
 // initialize splitter
 const splitter = new RecursiveCharacterTextSplitter({
@@ -8,15 +8,13 @@ const splitter = new RecursiveCharacterTextSplitter({
 })
 
 // retrieve data
-async function chunker(allData) {
+export default async function chunker(allData) {
     // combine all the text
     const text = allData.join(" ")
     
     // split the text into chunks
     const documents = await splitter.createDocuments([text])
-    console.log(`This is the chunk count: ${documents.length}.`)
+    console.log(`chunk count: ${documents.length}.`)
 
     return documents
 }
-
-module.exports = chunker;
