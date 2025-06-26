@@ -7,7 +7,7 @@ export default async function vectorSearch(embedding) {
                 $vectorSearch: {
                     queryVector: embedding,
                     path: "embedding",
-                    numCandidates: 36,
+                    numCandidates: 35,
                     limit: 3,
                     index: 'vector_index'
                 }
