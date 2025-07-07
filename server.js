@@ -14,14 +14,22 @@ import createVectorEmbeddings from './RAG_Pipeline/embedding.js'
 import storeDocuments from './RAG_Pipeline/store.js'
 
 async function createRetrievalDocuments() {
+    // scrape website pages
     const allData = await getRetrievalData()
     console.log("pages scraped, now chunking...")
+
+    // chunk text into documents of 1000 characters
     const chunks = await chunker(allData)
-    const chunkContent = ["We serve young men of color between the 7th and 11th grade who are from low income communities. Since 2009, we’ve used the concept of developing strong teams as a way for our young men to learn about collaboration, ideation, and long-lasting life skills. In small teams, our youths learn the process of taking an idea from concept to market."]// chunks.map((chunk, id) => chunk.pageContent.toString())
+
+    // return only the text from the chunk documentws
+    const chunkContent = chunks.map((chunk, id) => chunk.pageContent.toString())
     console.log("converting to vector embeddings...")
+
+    // convert chunks into vector embeddings
     const embeddings = await createVectorEmbeddings(chunkContent)
     console.log("storing embeddings on mongodb...")
-    console.log(embeddings)
+
+    // store embeddings into mongoDB
     storeDocuments(chunkContent, embeddings)
 }
 

@@ -28,15 +28,19 @@ export default async function getRetrievalData() {
 
     const allReturnData = [];
 
-    // launches puppeteer as a headless broswer search,
-    // and waits until there are no more than 2 network connections
+    // launches puppeteer as a headless broswer search
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
+    // for all the website links, loop this code
     for (let i = 0; i < websites.length; i++) {
+
+      // and waits until there are no more than 2 network connections
       await page.goto(websites[i], {
         waitUntil: "networkidle2",
       });
+
+      // returns the HTML of the web page
       const content = await page.content();
 
       // parse HTML with cheerio
@@ -50,12 +54,13 @@ export default async function getRetrievalData() {
         // store text in array
         allReturnData.push(returnData);
       });
-      console.log(`scraped page ${i + 1}`)
+      console.log(`scraped page ${i + 1}`);
     }
 
-    // return array
+    // remove duplicate values
     const allData = [...new Set(allReturnData)];
 
+    // return array
     return allData;
   } catch (e) {
     throw e;
